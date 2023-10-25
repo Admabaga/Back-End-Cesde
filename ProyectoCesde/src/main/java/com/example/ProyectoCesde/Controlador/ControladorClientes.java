@@ -18,7 +18,7 @@ public class ControladorClientes {
         this.servicioClientes = servicioClientes;
     }
 
-    @PostMapping(value = "/clientes")
+    @PostMapping(value = "/publico/clientes")
     public ClientesDTO guardarCLientes(@RequestBody ClientesDTO clientesDTO){
         return servicioClientes.guardarCliente(clientesDTO);
     }
