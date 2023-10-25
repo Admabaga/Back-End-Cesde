@@ -13,6 +13,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -47,7 +48,7 @@ public class ServicioClientesImpl implements ServicioClientes {
 
     @Override
     public String enviarCorreoAClientes(CorreoDTO correoDTO) {
-        List<String> correos = repositorioClientes.correosClientes();
+        Set<String> correos = repositorioClientes.correosClientes();
         for (String correoClientes : correos) {
             Correo correo = new Correo();
                 correo.setCorreo(correoClientes.toString());

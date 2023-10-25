@@ -29,7 +29,7 @@ public class ControladorClientes {
     }
 
     @PostMapping(value ="/clientes/correos")
-    public void enviarCorreos(@RequestBody CorreoDTO correoDTO) {
-        servicioClientes.enviarCorreoAClientes(correoDTO);
+    public String enviarCorreos(@RequestBody CorreoDTO correoDTO) {
+        return servicioClientes.enviarCorreoAClientes(correoDTO);
     }
 }
