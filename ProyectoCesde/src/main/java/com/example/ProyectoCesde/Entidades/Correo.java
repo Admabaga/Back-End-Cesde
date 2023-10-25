@@ -6,8 +6,9 @@ import jakarta.persistence.Id;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
+import java.util.List;
 
 
 @Entity
@@ -15,17 +16,22 @@ public class Correo {
     @Id
     @GeneratedValue
     private Long id;
+    private String remitente;
+    private String correo;
     private String asunto;
     private String cuerpoDelCorreo;
-    private String correo;
-    private String remitente;
+    private String nombreArchivo;
+    private MultipartFile archivo;
 
-    public Correo(Long id, String asunto, String cuerpoDelCorreo, String correo, String remitente) {
+
+    public Correo(Long id, String remitente, String correo, String asunto, String cuerpoDelCorreo, String nombreArchivo, MultipartFile archivo) {
         this.id = id;
+        this.remitente = remitente;
+        this.correo = correo;
         this.asunto = asunto;
         this.cuerpoDelCorreo = cuerpoDelCorreo;
-        this.correo = correo;
-        this.remitente = remitente;
+        this.nombreArchivo = nombreArchivo;
+        this.archivo = archivo;
     }
 
     public Correo() {
@@ -69,6 +75,22 @@ public class Correo {
 
     public void setRemitente(String remitente) {
         this.remitente = remitente;
+    }
+
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+
+    public MultipartFile getArchivo() {
+        return archivo;
+    }
+
+    public void setArchivo(MultipartFile archivo) {
+        this.archivo = archivo;
     }
 
     @Override

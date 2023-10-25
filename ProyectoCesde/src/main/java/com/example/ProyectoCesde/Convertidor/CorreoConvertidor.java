@@ -8,6 +8,7 @@ public class CorreoConvertidor {
         Correo correo = new Correo();
         correo.setAsunto(correoDTO.getAsunto());
         correo.setCuerpoDelCorreo(correoDTO.getCuerpoDelCorreo());
+        correo.setArchivo(correoDTO.getArchivo());
         return correo;
     }
 
@@ -17,6 +18,7 @@ public class CorreoConvertidor {
         correoDTO.setAsunto(correo.getAsunto());
         correoDTO.setCuerpoDelCorreo(correo.getCuerpoDelCorreo());
         correoDTO.setRemitente(correo.getRemitente());
+        correoDTO.setNombreArchivo(correo.getNombreArchivo());
         return correoDTO;
     }
 }

@@ -3,10 +3,9 @@ package com.example.ProyectoCesde.Controlador;
 import com.example.ProyectoCesde.DTOS.ClientesDTO;
 import com.example.ProyectoCesde.DTOS.CorreoDTO;
 import com.example.ProyectoCesde.Servicios.ServicioClientes;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -31,5 +30,12 @@ public class ControladorClientes {
     @PostMapping(value ="/clientes/correos")
     public void enviarCorreos(@RequestBody CorreoDTO correoDTO) {
         servicioClientes.enviarCorreoAClientes(correoDTO);
+    }
+
+    @PostMapping("/sendmail")
+    public ResponseEntity<String> sendMail(@RequestBody CorreoDTO correoDTO) {
+
+        servicioClientes.enviarCorreosAdjuntos(correoDTO);
+        return ResponseEntity.ok("Mail sent successfully");
     }
 }

@@ -13,4 +13,6 @@ public interface ServicioClientes {
     List<ClientesDTO> traerClientes();
 
     String enviarCorreoAClientes(CorreoDTO correoDTO) ;
+
+    String enviarCorreosAdjuntos(CorreoDTO correoDTO);
 }
