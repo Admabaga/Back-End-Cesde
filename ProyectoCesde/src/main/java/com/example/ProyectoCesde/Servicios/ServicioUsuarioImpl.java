@@ -47,7 +47,6 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
 
     @Override
     public String log(LogDTO logDTO) {
-        nombreExisteEnBaseDeDatos(logDTO.getNombreUsuario());
         Usuario usuario = repositorioUsuarios.traerUsuarioPorNombre(logDTO.getNombreUsuario());
         if (usuario == null){
             throw new RuntimeException("Ingrese el usuario y la contraseña");
@@ -60,11 +59,6 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
         return logDTO.getToken();
     }
 
-    public void nombreExisteEnBaseDeDatos(String nombreUsuario){
-        if (!repositorioUsuarios.nombreExiste(nombreUsuario)) {
-            throw new RuntimeException("El usuario ingresado no existe");
-        }
-    }
 
     public void generarToken(LogDTO logDTO){
         Authentication authentication = authenticationManager.authenticate(
