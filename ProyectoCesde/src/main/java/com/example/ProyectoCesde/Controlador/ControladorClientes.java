@@ -2,6 +2,7 @@ package com.example.ProyectoCesde.Controlador;
 
 import com.example.ProyectoCesde.DTOS.ClientesDTO;
 import com.example.ProyectoCesde.DTOS.CorreoDTO;
+import com.example.ProyectoCesde.Entidades.Correo;
 import com.example.ProyectoCesde.Servicios.ServicioClientes;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -29,7 +30,7 @@ public class ControladorClientes {
     }
 
     @PostMapping(value ="/clientes/correos")
-    public String enviarCorreos(@RequestBody CorreoDTO correoDTO) {
+    public List<CorreoDTO> enviarCorreos(@RequestBody CorreoDTO correoDTO) {
         return servicioClientes.enviarCorreoAClientes(correoDTO);
     }
 }

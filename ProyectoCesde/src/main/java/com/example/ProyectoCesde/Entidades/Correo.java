@@ -8,6 +8,7 @@ import org.springframework.core.io.InputStreamSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 
 import java.io.File;
+import java.time.LocalDateTime;
 
 
 @Entity
@@ -19,13 +20,15 @@ public class Correo {
     private String cuerpoDelCorreo;
     private String correo;
     private String remitente;
+    private LocalDateTime fechaYHora;
 
-    public Correo(Long id, String asunto, String cuerpoDelCorreo, String correo, String remitente) {
+    public Correo(Long id, String asunto, String cuerpoDelCorreo, String correo, String remitente, LocalDateTime fechaYHora) {
         this.id = id;
         this.asunto = asunto;
         this.cuerpoDelCorreo = cuerpoDelCorreo;
         this.correo = correo;
         this.remitente = remitente;
+        this.fechaYHora = fechaYHora;
     }
 
     public Correo() {
@@ -71,6 +74,14 @@ public class Correo {
         this.remitente = remitente;
     }
 
+    public LocalDateTime getFechaYHora() {
+        return fechaYHora;
+    }
+
+    public void setFechaYHora(LocalDateTime fechaYHora) {
+        this.fechaYHora = fechaYHora;
+    }
+
     @Override
     public String toString() {
         return "Correo{" +
@@ -79,6 +90,7 @@ public class Correo {
                 ", cuerpoDelCorreo='" + cuerpoDelCorreo + '\'' +
                 ", correo='" + correo + '\'' +
                 ", remitente='" + remitente + '\'' +
+                ", fechaYHora=" + fechaYHora +
                 '}';
     }
 }

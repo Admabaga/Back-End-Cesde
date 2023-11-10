@@ -2,7 +2,7 @@ package com.example.ProyectoCesde.Servicios;
 
 import com.example.ProyectoCesde.DTOS.ClientesDTO;
 import com.example.ProyectoCesde.DTOS.CorreoDTO;
-import jakarta.mail.MessagingException;
+import com.example.ProyectoCesde.Entidades.Correo;
 
 import java.util.List;
 
@@ -12,5 +12,5 @@ public interface ServicioClientes {
 
     List<ClientesDTO> traerClientes();
 
-    String enviarCorreoAClientes(CorreoDTO correoDTO) ;
+    List<CorreoDTO> enviarCorreoAClientes(CorreoDTO correoDTO) ;
 }

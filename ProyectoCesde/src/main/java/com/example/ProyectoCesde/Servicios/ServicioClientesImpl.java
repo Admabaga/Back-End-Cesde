@@ -1,6 +1,7 @@
 package com.example.ProyectoCesde.Servicios;
 
 import com.example.ProyectoCesde.Convertidor.ClientesConvertidor;
+import com.example.ProyectoCesde.Convertidor.CorreoConvertidor;
 import com.example.ProyectoCesde.DTOS.ClientesDTO;
 import com.example.ProyectoCesde.DTOS.CorreoDTO;
 import com.example.ProyectoCesde.Entidades.Clientes;
@@ -12,6 +13,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -28,6 +30,7 @@ public class ServicioClientesImpl implements ServicioClientes {
         this.repositorioCorreo = repositorioCorreo;
         this.enviarCorreo = enviarCorreo;
     }
+
 
     @Override
     public ClientesDTO guardarCliente(ClientesDTO clienteDTO) {
@@ -47,22 +50,32 @@ public class ServicioClientesImpl implements ServicioClientes {
     }
 
     @Override
-    public String enviarCorreoAClientes(CorreoDTO correoDTO) {
-        Set<String> correos = repositorioClientes.correosClientes();
-        for (String correoClientes : correos) {
-            Correo correo = new Correo();
-                correo.setCorreo(correoClientes.toString());
-                correo.setAsunto(correoDTO.getAsunto());
-                correo.setCuerpoDelCorreo(correoDTO.getCuerpoDelCorreo());
-                correo.setRemitente("admabaga@outlook.com");
-                envioAdjuntos(correo);
+    public List<CorreoDTO> enviarCorreoAClientes(CorreoDTO correoDTO) {
+        Set<String> correosBaseDeDatos = repositorioClientes.correosClientes();
+        List<String> correos = correoDTO.getCorreos();
+        List<Correo> correosEnviados;
+        if (correos != null){
+                for (String correosIngresados : correos){
+                Correo correo = CorreoConvertidor.dtoAEntidad(correoDTO);
+                correo.setCorreo(correosIngresados);
+                enviarCorreos(correo);
                 repositorioCorreo.save(correo);
-
+            }
+        }else {
+            for (String correoClientes : correosBaseDeDatos) {
+                Correo correo = CorreoConvertidor.dtoAEntidad(correoDTO);
+                correo.setCorreo(correoClientes.toString());
+                enviarCorreos(correo);
+                repositorioCorreo.save(correo);
+            }
         }
-        return ("Correo enviado exitosamente!");
+        correosEnviados = repositorioCorreo.findAll();
+        return correosEnviados.stream()
+                .map(CorreoConvertidor::entidadADto)
+                .collect(Collectors.toList());
     }
 
-    public void envioAdjuntos(Correo correo){
+    public void enviarCorreos(Correo correo){
         SimpleMailMessage correoAEnviar = new SimpleMailMessage();
         correoAEnviar.setFrom(correo.getRemitente());
         correoAEnviar.setTo(correo.getCorreo());
