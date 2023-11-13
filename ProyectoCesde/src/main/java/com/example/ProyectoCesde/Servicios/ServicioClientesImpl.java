@@ -14,6 +14,7 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -35,9 +36,7 @@ public class ServicioClientesImpl implements ServicioClientes {
     @Override
     public ClientesDTO guardarCliente(ClientesDTO clienteDTO) {
         Clientes clientes = ClientesConvertidor.dtoAEntidad(clienteDTO);
-        clientes = repositorioClientes.save(clientes);
-        Correo correo = new Correo();
-        correo.setCorreo(clientes.getCorreoElectronico());
+        repositorioClientes.save(clientes);
         return ClientesConvertidor.entidadADto(clientes);
     }
 
@@ -53,12 +52,13 @@ public class ServicioClientesImpl implements ServicioClientes {
     public List<CorreoDTO> enviarCorreoAClientes(CorreoDTO correoDTO) {
         Set<String> correosBaseDeDatos = repositorioClientes.correosClientes();
         List<String> correos = correoDTO.getCorreos();
-        List<Correo> correosEnviados;
+        List<Correo> correosEnviados = new ArrayList<>();
         if (correos != null){
                 for (String correosIngresados : correos){
                 Correo correo = CorreoConvertidor.dtoAEntidad(correoDTO);
                 correo.setCorreo(correosIngresados);
                 enviarCorreos(correo);
+                correosEnviados.add(correo);
                 repositorioCorreo.save(correo);
             }
         }else {
@@ -66,10 +66,10 @@ public class ServicioClientesImpl implements ServicioClientes {
                 Correo correo = CorreoConvertidor.dtoAEntidad(correoDTO);
                 correo.setCorreo(correoClientes.toString());
                 enviarCorreos(correo);
+                correosEnviados.add(correo);
                 repositorioCorreo.save(correo);
             }
         }
-        correosEnviados = repositorioCorreo.findAll();
         return correosEnviados.stream()
                 .map(CorreoConvertidor::entidadADto)
                 .collect(Collectors.toList());
@@ -83,6 +83,7 @@ public class ServicioClientesImpl implements ServicioClientes {
         correoAEnviar.setText(correo.getCuerpoDelCorreo());
         enviarCorreo.send(correoAEnviar);
     }
+
 }
 
 
