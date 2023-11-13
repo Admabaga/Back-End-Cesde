@@ -101,7 +101,7 @@ public class SerivicioClientesImplTest {
     }
 
     @Test
-    public void traerProductos() {
+    public void traerClientes() {
         // given
         List<Clientes> clientes = Arrays.asList(
                 new Clientes("Andres Garcia", "varmencino@gmail.com", "3148633210","Buenas noches",15L),
