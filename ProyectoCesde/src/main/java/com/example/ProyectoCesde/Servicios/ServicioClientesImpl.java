@@ -87,7 +87,9 @@ public class ServicioClientesImpl implements ServicioClientes {
         correoAEnviar.setTo(correoDTO.getCorreo());
         correoAEnviar.setSubject(correoDTO.getAsunto());
         correoAEnviar.setText(correoDTO.getCuerpoDelCorreo());
-        correoAEnviar.addAttachment(correoDTO.getNombreArchivo(), correoDTO.getArchivoAdjunto());
+        if (correoDTO.getArchivoAdjunto() != null){
+            correoAEnviar.addAttachment(correoDTO.getNombreArchivo(), correoDTO.getArchivoAdjunto());
+        }
         enviarCorreo.send(message);
     }
 }

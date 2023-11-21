@@ -35,15 +35,17 @@ public class ControladorClientes {
             @RequestParam("correos") List<String> correos,
             @RequestParam("asunto") String asunto,
             @RequestParam("cuerpoDelCorreo") String cuerpoDelCorreo,
-            @RequestPart("file") MultipartFile adjunto) throws MessagingException, IOException {
+            @RequestPart(name = "file", required = false) MultipartFile adjunto) throws MessagingException, IOException {
         CorreoDTO correoDTO = new CorreoDTO();
-        String nombreArchivo = adjunto.getOriginalFilename();
+        if (adjunto != null){
+            String nombreArchivo = adjunto.getOriginalFilename();
+            correoDTO.setNombreArchivo(nombreArchivo);
+            correoDTO.setArchivoAdjunto(adjunto);
+        }
         correoDTO.setRemitente(remitente);
         correoDTO.setAsunto(asunto);
         correoDTO.setCorreos(correos);
         correoDTO.setCuerpoDelCorreo(cuerpoDelCorreo);
-        correoDTO.setArchivoAdjunto(adjunto);
-        correoDTO.setNombreArchivo(nombreArchivo);
         return servicioClientes.enviarCorreoAClientes(correoDTO);
     }
 }
