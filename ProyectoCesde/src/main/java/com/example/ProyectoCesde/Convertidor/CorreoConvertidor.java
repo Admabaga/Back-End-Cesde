@@ -13,6 +13,7 @@ public class CorreoConvertidor {
         correo.setCuerpoDelCorreo(correoDTO.getCuerpoDelCorreo());
         correo.setRemitente(correoDTO.getRemitente());
         correo.setFechaYHora(LocalDateTime.now());
+        correo.setNombreArchivo(correoDTO.getNombreArchivo());
         return correo;
     }
 
@@ -24,6 +25,7 @@ public class CorreoConvertidor {
         correoDTO.setRemitente(correo.getRemitente());
         correoDTO.setFechaYHora(correo.getFechaYHora());
         correoDTO.setCorreo(correo.getCorreo());
+        correoDTO.setNombreArchivo(correo.getNombreArchivo());
         return correoDTO;
     }
 }

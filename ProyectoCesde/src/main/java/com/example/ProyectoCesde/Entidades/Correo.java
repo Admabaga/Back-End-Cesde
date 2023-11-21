@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import org.springframework.context.annotation.Bean;
 import org.springframework.core.io.InputStreamSource;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.time.LocalDateTime;
@@ -23,19 +24,32 @@ public class Correo {
     private String correo;
     private String remitente;
     private LocalDateTime fechaYHora;
+    private String nombreArchivo;
 
 
-    public Correo(Long id, String asunto, String cuerpoDelCorreo, String correo, String remitente, LocalDateTime fechaYHora) {
+
+    public Correo(Long id, String asunto, String cuerpoDelCorreo, String correo, String remitente, LocalDateTime fechaYHora, String nombreArchivo) {
         this.id = id;
         this.asunto = asunto;
         this.cuerpoDelCorreo = cuerpoDelCorreo;
         this.correo = correo;
         this.remitente = remitente;
         this.fechaYHora = fechaYHora;
+        this.nombreArchivo = nombreArchivo;
+
     }
 
     public Correo() {
     }
+
+    public String getNombreArchivo() {
+        return nombreArchivo;
+    }
+
+    public void setNombreArchivo(String nombreArchivo) {
+        this.nombreArchivo = nombreArchivo;
+    }
+
 
     public String getCorreo() {
         return correo;

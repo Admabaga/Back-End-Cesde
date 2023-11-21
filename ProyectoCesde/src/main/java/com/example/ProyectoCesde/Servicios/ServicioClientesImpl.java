@@ -2,7 +2,6 @@ package com.example.ProyectoCesde.Servicios;
 
 import com.example.ProyectoCesde.Convertidor.ClientesConvertidor;
 import com.example.ProyectoCesde.Convertidor.CorreoConvertidor;
-import com.example.ProyectoCesde.Convertidor.TransformadorMultipartByArray;
 import com.example.ProyectoCesde.DTOS.ClientesDTO;
 import com.example.ProyectoCesde.DTOS.CorreoDTO;
 import com.example.ProyectoCesde.Entidades.Clientes;
@@ -10,19 +9,12 @@ import com.example.ProyectoCesde.Entidades.Correo;
 import com.example.ProyectoCesde.Repositorios.RepositorioClientes;
 import com.example.ProyectoCesde.Repositorios.RepositorioCorreo;
 
-import jakarta.activation.DataSource;
-import jakarta.mail.Address;
 import jakarta.mail.MessagingException;
-import jakarta.mail.Multipart;
-import jakarta.mail.SendFailedException;
 import jakarta.mail.internet.MimeMessage;
-import jakarta.mail.util.ByteArrayDataSource;
 import jakarta.transaction.Transactional;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.ArrayList;
