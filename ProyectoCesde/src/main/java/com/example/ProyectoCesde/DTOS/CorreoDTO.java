@@ -1,6 +1,8 @@
 package com.example.ProyectoCesde.DTOS;
 
+import jakarta.mail.Multipart;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -15,4 +17,6 @@ public class CorreoDTO {
     String correo;
     List<String> correos;
     LocalDateTime fechaYHora;
+    MultipartFile archivoAdjunto;
+    String nombreArchivo;
 }
