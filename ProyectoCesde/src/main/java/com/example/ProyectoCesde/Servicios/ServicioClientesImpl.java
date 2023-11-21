@@ -2,6 +2,7 @@ package com.example.ProyectoCesde.Servicios;
 
 import com.example.ProyectoCesde.Convertidor.ClientesConvertidor;
 import com.example.ProyectoCesde.Convertidor.CorreoConvertidor;
+import com.example.ProyectoCesde.Convertidor.TransformadorMultipartByArray;
 import com.example.ProyectoCesde.DTOS.ClientesDTO;
 import com.example.ProyectoCesde.DTOS.CorreoDTO;
 import com.example.ProyectoCesde.Entidades.Clientes;
@@ -9,11 +10,21 @@ import com.example.ProyectoCesde.Entidades.Correo;
 import com.example.ProyectoCesde.Repositorios.RepositorioClientes;
 import com.example.ProyectoCesde.Repositorios.RepositorioCorreo;
 
+import jakarta.activation.DataSource;
+import jakarta.mail.Address;
+import jakarta.mail.MessagingException;
+import jakarta.mail.Multipart;
+import jakarta.mail.SendFailedException;
+import jakarta.mail.internet.MimeMessage;
+import jakarta.mail.util.ByteArrayDataSource;
 import jakarta.transaction.Transactional;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
@@ -49,23 +60,25 @@ public class ServicioClientesImpl implements ServicioClientes {
     }
 
     @Override
-    public List<CorreoDTO> enviarCorreoAClientes(CorreoDTO correoDTO) {
+    public List<CorreoDTO> enviarCorreoAClientes(CorreoDTO correoDTO) throws MessagingException, IOException {
         Set<String> correosBaseDeDatos = repositorioClientes.correosClientes();
         List<String> correos = correoDTO.getCorreos();
         List<Correo> correosEnviados = new ArrayList<>();
-        if (correos != null){
+        if (!correos.isEmpty()){
                 for (String correosIngresados : correos){
+                correoDTO.setCorreo(correosIngresados);
+                enviarCorreos(correoDTO);
                 Correo correo = CorreoConvertidor.dtoAEntidad(correoDTO);
                 correo.setCorreo(correosIngresados);
-                enviarCorreos(correo);
                 correosEnviados.add(correo);
                 repositorioCorreo.save(correo);
             }
         }else {
             for (String correoClientes : correosBaseDeDatos) {
+                correoDTO.setCorreo(correoClientes.toString());
+                enviarCorreos(correoDTO);
                 Correo correo = CorreoConvertidor.dtoAEntidad(correoDTO);
                 correo.setCorreo(correoClientes.toString());
-                enviarCorreos(correo);
                 correosEnviados.add(correo);
                 repositorioCorreo.save(correo);
             }
@@ -75,15 +88,16 @@ public class ServicioClientesImpl implements ServicioClientes {
                 .collect(Collectors.toList());
     }
 
-    public void enviarCorreos(Correo correo){
-        SimpleMailMessage correoAEnviar = new SimpleMailMessage();
-        correoAEnviar.setFrom(correo.getRemitente());
-        correoAEnviar.setTo(correo.getCorreo());
-        correoAEnviar.setSubject(correo.getAsunto());
-        correoAEnviar.setText(correo.getCuerpoDelCorreo());
-        enviarCorreo.send(correoAEnviar);
+    public void enviarCorreos(CorreoDTO correoDTO) throws MessagingException {
+        MimeMessage message = enviarCorreo.createMimeMessage();
+        MimeMessageHelper correoAEnviar = new MimeMessageHelper(message, true);
+        correoAEnviar.setFrom(correoDTO.getRemitente());
+        correoAEnviar.setTo(correoDTO.getCorreo());
+        correoAEnviar.setSubject(correoDTO.getAsunto());
+        correoAEnviar.setText(correoDTO.getCuerpoDelCorreo());
+        correoAEnviar.addAttachment(correoDTO.getNombreArchivo(), correoDTO.getArchivoAdjunto());
+        enviarCorreo.send(message);
     }
-
 }
 
 

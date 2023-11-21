@@ -1,5 +1,7 @@
 package com.example.ProyectoCesde.Entidades;
 
+import jakarta.activation.DataSource;
+import jakarta.mail.util.ByteArrayDataSource;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
@@ -21,6 +23,7 @@ public class Correo {
     private String correo;
     private String remitente;
     private LocalDateTime fechaYHora;
+
 
     public Correo(Long id, String asunto, String cuerpoDelCorreo, String correo, String remitente, LocalDateTime fechaYHora) {
         this.id = id;
