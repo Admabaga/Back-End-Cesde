@@ -15,12 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class ControladorLog {
-    private final ServicioUsuario servicioUsuario;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
 
-    public ControladorLog(ServicioUsuario servicioUsuario, AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
-        this.servicioUsuario = servicioUsuario;
+    public ControladorLog(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
     }

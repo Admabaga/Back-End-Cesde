@@ -51,6 +51,7 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
     @Override
     public String log(LogDTO logDTO) {
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logDTO.getNombreUsuario(), logDTO.getPassword()));
+
             Usuario usuario = repositorioUsuarios.traerUsuarioPorNombre(logDTO.getNombreUsuario());
             String token = jwtUtil.create(usuario.getNombreUsuario());
             return token;

@@ -14,6 +14,7 @@ public class UsuarioConvertidor {
 
     public static UsuarioDTO entidadADto(Usuario usuario){
         UsuarioDTO usuarioDTO = new UsuarioDTO();
+        usuarioDTO.setId(usuario.getId());
         usuarioDTO.setNombreUsuario(usuario.getNombreUsuario());
         usuarioDTO.setPassword(usuario.getPassword());
         return usuarioDTO;
