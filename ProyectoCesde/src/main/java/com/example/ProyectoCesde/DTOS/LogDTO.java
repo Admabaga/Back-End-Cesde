@@ -6,5 +6,4 @@ import lombok.Data;
 public class LogDTO {
     private String nombreUsuario;
     private String password;
-    private String token;
 }

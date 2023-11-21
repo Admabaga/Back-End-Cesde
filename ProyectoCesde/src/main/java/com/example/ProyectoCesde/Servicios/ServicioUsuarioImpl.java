@@ -1,6 +1,6 @@
 package com.example.ProyectoCesde.Servicios;
 
-import com.example.ProyectoCesde.ConfiguracionSeguridad.Tokens;
+import com.example.ProyectoCesde.ConfiguracionSeguridad.JwtUtil;
 import com.example.ProyectoCesde.Convertidor.UsuarioConvertidor;
 import com.example.ProyectoCesde.DTOS.LogDTO;
 import com.example.ProyectoCesde.DTOS.UsuarioDTO;
@@ -8,7 +8,7 @@ import com.example.ProyectoCesde.Entidades.Usuario;
 import com.example.ProyectoCesde.Repositorios.RepositorioUsuarios;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -18,17 +18,20 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
 
     private RepositorioUsuarios repositorioUsuarios;
     private AuthenticationManager authenticationManager;
-    private Tokens tokens;
+    private JwtUtil jwtUtil;
+    private final PasswordEncoder passwordEncoder;
 
-    public ServicioUsuarioImpl(RepositorioUsuarios repositorioUsuarios, AuthenticationManager authenticationManager, Tokens token) {
+    public ServicioUsuarioImpl(RepositorioUsuarios repositorioUsuarios, AuthenticationManager authenticationManager, JwtUtil jwtUtil, PasswordEncoder passwordEncoder) {
         this.repositorioUsuarios = repositorioUsuarios;
         this.authenticationManager = authenticationManager;
-        this.tokens = token;
+        this.jwtUtil = jwtUtil;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public UsuarioDTO crearusuario(UsuarioDTO usuarioDTO) {
         Usuario usuario = UsuarioConvertidor.dtoAEntidad(usuarioDTO);
+        usuario.setPassword(passwordEncoder.encode(usuario.getPassword()));
         repositorioUsuarios.save(usuario);
         return UsuarioConvertidor.entidadADto(usuario);
     }
@@ -47,23 +50,9 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
 
     @Override
     public String log(LogDTO logDTO) {
-        Usuario usuario = repositorioUsuarios.traerUsuarioPorNombre(logDTO.getNombreUsuario());
-        if (usuario == null){
-            throw new RuntimeException("Ingrese el usuario y la contraseña");
+            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logDTO.getNombreUsuario(), logDTO.getPassword()));
+            Usuario usuario = repositorioUsuarios.traerUsuarioPorNombre(logDTO.getNombreUsuario());
+            String token = jwtUtil.create(usuario.getNombreUsuario());
+            return token;
         }
-        if (usuario.getPassword().equals(logDTO.getPassword())){
-            throw new RuntimeException("Contraseña incorrecta");
-
-        }
-        generarToken(logDTO);
-        return logDTO.getToken();
-    }
-
-
-    public void generarToken(LogDTO logDTO){
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(logDTO.getNombreUsuario(), logDTO.getPassword()));
-        String token = tokens.crearToken(authentication);
-        logDTO.setToken(token);
-    }
 }

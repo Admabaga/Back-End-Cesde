@@ -7,13 +7,10 @@ import jakarta.persistence.Id;
 @Entity
 public class Usuario {
     @Id
-    @GeneratedValue
-    private Long id;
     private String nombreUsuario;
     private String password;
 
-    public Usuario(Long id, String nombreUsuario, String password) {
-        this.id = id;
+    public Usuario(String nombreUsuario, String password) {
         this.nombreUsuario = nombreUsuario;
         this.password = password;
     }
@@ -21,13 +18,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Long getId() {
-        return id;
-    }
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getNombreUsuario() {
         return nombreUsuario;
@@ -48,8 +39,7 @@ public class Usuario {
     @Override
     public String toString() {
         return "Usuario{" +
-                "id=" + id +
-                ", nombreUsuario='" + nombreUsuario + '\'' +
+                "nombreUsuario='" + nombreUsuario + '\'' +
                 ", password='" + password + '\'' +
                 '}';
     }
