@@ -43,16 +43,14 @@ public class ServicioUsuarioImpl implements ServicioUsuario {
             new RuntimeException("El usuario no existe");
         }
         Usuario usuario = usuarioOptional.get();
-        usuario.setPassword(usuarioDTO.getPassword());
         repositorioUsuarios.save(usuario);
         return UsuarioConvertidor.entidadADto(usuario);
     }
 
     @Override
     public String log(LogDTO logDTO) {
+             Usuario usuario = repositorioUsuarios.traerUsuarioPorNombre(logDTO.getNombreUsuario());
             authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(logDTO.getNombreUsuario(), logDTO.getPassword()));
-
-            Usuario usuario = repositorioUsuarios.traerUsuarioPorNombre(logDTO.getNombreUsuario());
             String token = jwtUtil.create(usuario.getNombreUsuario());
             return token;
         }
