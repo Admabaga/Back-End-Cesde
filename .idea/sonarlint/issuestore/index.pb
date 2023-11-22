@@ -5,8 +5,6 @@ YProyectoCesde/src/main/java/com/example/ProyectoCesde/Convertidor/UsuarioConver
 SProyectoCesde/src/main/java/com/example/ProyectoCesde/ProyectoCesdeApplication.java,3\c\3c304131c96b7db00e7ae8f77dfd61b2aa92264a
 ‹
 [ProyectoCesde/src/main/java/com/example/ProyectoCesde/Repositorios/RepositorioClientes.java,e\4\e40a21e327dd2d5bd6e977a0399a4ced78a209af
-Š
-ZProyectoCesde/src/main/java/com/example/ProyectoCesde/Controlador/ControladorClientes.java,c\7\c76583eef0e1e4bdf91d23be22d3cdf7cdd7601c
 e
 5.idea/libraries/Maven__io_jsonwebtoken_jjwt_0_9_1.xml,3\d\3d23cb6b52ed4eff15459c9d07523bc73bb57f52
 ‚
